@@ -1,8 +1,10 @@
 # API-vendas
 
-## Pacotes necessarios para iniciar a visualização do server em modo desenvolvimento
+## Detalhes do processo/motivos bibliotecas usadas
 
-Passo 1 - Iniciaar o NPM no projeto
+### Inicialização do npm e typescript
+
+Passo 1 - Iniciar o NPM no projeto
 
 ```shell
   npm init
@@ -36,7 +38,7 @@ Passo 6 - Agora posso executar o porojeto em modo desenvolvimento
   npm run dev
 ```
 
-## Ferramentas de padrozização de código
+### Ferramentas de padrozização de código
 
 Passo 1 - Utilizo o .editorconfig para ja começar a automatização de identação do código via plugin no vscode.
 
@@ -114,7 +116,7 @@ Passo 8 - Instalando config e plugin do prettier
   npm i eslint-config-prettier@6.15.0 eslint-plugin-prettier@3.2.0 -D
 ```
 
-## Arctetura de pastas
+### Arctetura de pastas
 
 `config` - Configurações de bibliotecas externas, como por exemplo, autenticação, upload, email, etc.
 
@@ -139,7 +141,7 @@ Passo 1 - Coloquei uma config no tsconfig.json, para fornece atalhos as pastas c
   }
 ```
 
-## Instalando o Express
+### Instalando o Express
 
 Instale o express
 
@@ -153,7 +155,7 @@ E também a tipagem do express
   npm i -D @types/express @types/cors
 ```
 
-## Instalação do ORM, para manipulação dos Bancos de Dados
+### Instalação do ORM, para manipulação dos Bancos de Dados
 
 Vou utilizar o typeORM para essa funcionalidade, para isso precisei instalar:
 
@@ -182,7 +184,7 @@ Para poder utilizar as Entidade sem que acuse erro vindo do typescript, precisei
     "strictPropertyInitialization": false,
 ```
 
-## Instalação do CELEBRATE
+### Instalação do CELEBRATE
 
 Ele é uma biblioteca que validara os dados recebidos pela API
 
@@ -198,7 +200,7 @@ Passo 2: Instalar a tipagem do Joi, que é utilizada pela biblioteca.
   npm i -D @types/joi
 ```
 
-## Intalação do Bcrypted
+### Intalação do Bcrypted
 
 Vai ser utilizado para a criptografia das senhas dos usuários
 
@@ -214,7 +216,7 @@ Passo 2: Instalar a tipagem da biblioteca
   npm i -D @types/bcryptjs
 ```
 
-## Instalação do JWT
+### Instalação do JWT
 
 Será utilizada para gerar o token de autenticação para o usuário
 
@@ -230,7 +232,7 @@ Passo 1: Instalar os tipos da biblioteca
   npm i -D @types/jsonwebtoken
 ```
 
-## Instalação do Multer
+### Instalação do Multer
 
 Seu objetivo é o funcionamento dos uploads da aplicação.
 
@@ -246,7 +248,7 @@ Passo 1: Instalar os tipos da biblioteca
   npm i -D @types/multer
 ```
 
-## Instalação do Date-fns
+### Instalação do Date-fns
 
 Irá servir para a manipulação de date e hora, para verificar se o token ainda está valido.
 
@@ -254,7 +256,7 @@ Irá servir para a manipulação de date e hora, para verificar se o token ainda
   npm i date-fns
 ```
 
-## Instalação do Nodemailer
+### Instalação do Nodemailer
 
 Será a biblioteca que fará as entregas via email da aplicação
 
@@ -270,7 +272,7 @@ Passo 1: Instalar os tipos da biblioteca
   npm i -D @types/nodemailer
 ```
 
-## Instalação do Handlebars
+### Instalação do Handlebars
 
 Servirá para a criação dos templates para estilizar o emails enviados
 
