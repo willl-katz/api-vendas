@@ -250,7 +250,7 @@ Passo 1: Instalar os tipos da biblioteca
 
 ### Instalação do Date-fns
 
-Irá servir para a manipulação de date e hora, para verificar se o token ainda está valido.
+Serve para a manipulação de data e hora, com objetivo de verificar se o token ainda está valido.
 
 ```shell
   npm i date-fns
@@ -274,7 +274,7 @@ Passo 1: Instalar os tipos da biblioteca
 
 ### Instalação do Handlebars
 
-Servirá para a criação dos templates para estilizar o emails enviados
+Servirá para a criação dos templates para estilizar os emails enviados
 
 ```shell
   npm i handlebars
