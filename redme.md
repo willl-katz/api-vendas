@@ -1,6 +1,6 @@
 # API-vendas
 
-## Detalhes do processo/motivos bibliotecas usadas
+## Detalhes do processo/motivos das bibliotecas usadas
 
 ### Inicialização do npm e typescript
 
