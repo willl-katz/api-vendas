@@ -1,6 +1,7 @@
 import 'reflect-metadata';
+import 'dotenv/config ';
 import express, { NextFunction, Request, Response } from 'express';
-import 'express-async-errors'
+import 'express-async-errors';
 import cors from 'cors';
 import routes from './routes';
 import AppError from '@shared/errors/AppError';
@@ -12,34 +13,30 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-app.use('/files', express.static(uploadConfig.directory)) // Definição de rota statica para visualização das imagens via diretório
+app.use('/files', express.static(uploadConfig.directory)); // Definição de rota statica para visualização das imagens via diretório
 
 app.use(routes);
 
 app.use(errors());
 
 app.use(
-  (
-    error: Error,
-    request: Request,
-    response: Response,
-    next: NextFunction
-  ) => {
+  (error: Error, request: Request, response: Response, next: NextFunction) => {
     // Error gerado pela classe AppError
     if (error instanceof AppError) {
       return response.status(error.statusCode).json({
         status: 'error',
         message: error.message,
-      })
+      });
     }
 
     // Erro gerado pelo servidor
     return response.status(500).json({
       status: 'error',
       message: 'Internal Server Error',
-    })
-});
+    });
+  },
+);
 
 app.listen(3333, () => {
   console.log('Server Started on port 3333! 🏆');
-})
+});

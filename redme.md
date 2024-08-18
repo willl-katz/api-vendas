@@ -51,25 +51,22 @@ Passo 2 - Instalo o ESLint com as confirações necessárias para o typescript. 
 Passo 3 - Crio e configuro o arquivo .eslintrc
 
 ```json
-  {
-    "root": true,
-    "parser": "@typescript-eslint/parser",
-    "plugins": [
-      "@typescript-eslint",
-      "prettier"
-    ],
-    "extends": [
-      "eslint:recommended",
-      "plugin:@typescript-eslint/eslint-recommended",
-      "plugin:@typescript-eslint/recommended",
-      "prettier/@typescript-eslint",
-      "plugin:prettier/recommended"
-    ],
-    "rules": {
-      "no-console": "warn",
-      "prettier/prettier": "error"
-    }
+{
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint", "prettier"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "prettier/@typescript-eslint",
+    "plugin:prettier/recommended"
+  ],
+  "rules": {
+    "no-console": "warn",
+    "prettier/prettier": "error"
   }
+}
 ```
 
 Passo 4 - Crio e configuro o .eslintignore
@@ -101,13 +98,13 @@ Passo 6 - Juntamente com o ESLint, instalei o Prettier, que realizará a formata
 Passo 7 - Criei e configurei o arquivo .prettierrc
 
 ```json
-  {
-    "semi": true,
-    "trailingComma": "all",
-    "singleQuote": true,
-    "printWidth": 80,
-    "arrowParens": "avoid"
-  }
+{
+  "semi": true,
+  "trailingComma": "all",
+  "singleQuote": true,
+  "printWidth": 80,
+  "arrowParens": "avoid"
+}
 ```
 
 Passo 8 - Instalando config e plugin do prettier
@@ -278,4 +275,52 @@ Servirá para a criação dos templates para estilizar os emails enviados
 
 ```shell
   npm i handlebars
+```
+
+### Instalação do Typeorm-easy-pagination
+
+Serve para criar um objeto com paginação, sendo assim limitar a visualização, podendo percorrer a lista completa.
+
+```shell
+  npm i typeorm-pagination
+```
+
+#### Identificação de bug
+
+A função paginate não funciona por algum motivo, e como solução, utilizei um molde, vindo da biblioteca, e apliquei uma lógica para me trazer um array de acordo com a página, e quantidade total de itens por página.
+
+```typescript
+// Função para dividir o array com base na quantidade por página
+function dividirArray({
+  array,
+  tamanho,
+}: {
+  array: Customer[];
+  tamanho: number;
+}) {
+  let resultado = [];
+  for (let i = 0; i < array.length; i += tamanho) {
+    resultado.push(array.slice(i, i + tamanho));
+  }
+  return resultado;
+}
+
+const filteredCustomers = dividirArray({
+  array: customers,
+  tamanho: totalPerPage,
+});
+
+const paginateCustomer = paginationObject(
+  filteredCustomers[totalCurrentPage - 1], // [...] - seleciona pela página.
+  totalCurrentPage,
+  totalPerPage,
+  totalItems,
+);
+```
+### Instalação do Dotenv
+
+Servirá para configura as variáveis de ambiente do projeto
+
+```shell
+  npm i dotenv
 ```

@@ -1,13 +1,14 @@
-import { AppDataSource } from "@shared/typeorm";
-import Customer from "../entities/Customer";
+import { AppDataSource } from '@shared/typeorm';
+import Customer from '../entities/Customer';
+import { paginate } from 'typeorm-easy-paginate';
 
 export const CustomerRepository = AppDataSource.getRepository(Customer).extend({
   async findByName(name: string): Promise<Customer | null> {
     const customer = await CustomerRepository.findOne({
       where: {
         name,
-      }
-    })
+      },
+    });
     return customer;
   },
 
@@ -15,8 +16,8 @@ export const CustomerRepository = AppDataSource.getRepository(Customer).extend({
     const customer = await CustomerRepository.findOne({
       where: {
         id,
-      }
-    })
+      },
+    });
     return customer;
   },
 
@@ -24,8 +25,18 @@ export const CustomerRepository = AppDataSource.getRepository(Customer).extend({
     const customer = await CustomerRepository.findOne({
       where: {
         email,
-      }
-    })
+      },
+    });
     return customer;
-  }
-})
+  },
+
+  async all(): Promise<any> {
+    const customer = await paginate<Customer>(Customer, {
+      page: 1,
+      perPage: 10,
+    }).catch(err => {
+      console.error(err);
+    });
+    return customer;
+  },
+});

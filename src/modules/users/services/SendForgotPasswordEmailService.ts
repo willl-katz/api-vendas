@@ -21,17 +21,17 @@ class SendForgotPasswordEmailService {
     await EtherealMail.sendMail({
       to: {
         email,
-        name: user.name
+        name: user.name,
       },
       subject: 'Api Vendas - Recuperação de senha',
       templateData: {
         file: forgotPasswordTemplate,
         variables: {
           name: user.name,
-          link: `http://localhost:3000/reset_password?token=${token}`
-        }
-      }
-    })
+          link: `${process.env.APP_WEB_URL}/reset_password?token=${token}`,
+        },
+      },
+    });
   }
 }
 

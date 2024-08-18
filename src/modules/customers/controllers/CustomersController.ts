@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import ListCustomersService from "../services/ListCustomersService";
 import ShowCustomerService from "../services/ShowCustomerService";
 import CreateCustomerService from "../services/CreateCustomerService";
@@ -7,10 +7,15 @@ import DeleteCustomerService from "../services/DeleteCustomerService";
 
 
 export default class CustomersController {
-  public async index(request:Request, response:Response): Promise<Response> {
+  public async index(request: Request, response: Response): Promise<Response> {
+    const { perPage, page } = request.query;
+
     const listCustomers = new ListCustomersService();
 
-    const customers = await listCustomers.execute();
+    const customers = await listCustomers.execute({
+      totalCurrentPage: !page ? 1 : Number(page),
+      totalPerPage: !perPage ? 2 : Number(perPage),
+    });
 
     return response.json(customers);
   }
