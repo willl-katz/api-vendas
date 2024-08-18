@@ -1,6 +1,8 @@
-import { Request, Response } from "express";
-import ListUserService from "../services/ListUserService";
-import CreateUserService from "../services/CreateUserService";
+import { Request, Response } from 'express';
+import ListUserService from '../services/ListUserService';
+import CreateUserService from '../services/CreateUserService';
+import { instanceToPlain } from 'class-transformer';
+import User from '../typeorm/entities/User';
 
 export default class UsersController {
   public async index(request: Request, response: Response): Promise<Response> {
@@ -8,7 +10,7 @@ export default class UsersController {
 
     const users = await listUsers.execute();
 
-    return response.json(users);
+    return response.json(instanceToPlain(users));
   }
 
   public async create(request: Request, response: Response): Promise<Response> {
@@ -19,9 +21,13 @@ export default class UsersController {
     const user = await createUser.execute({
       name,
       email,
-      password
+      password,
     });
 
-    return response.json(user);
+    return response.json(instanceToPlain(user));
   }
 }
+function classToInstance(users: import("../typeorm/entities/User").default[], arg1: { strategy: string; }): any {
+  throw new Error('Function not implemented.');
+}
+

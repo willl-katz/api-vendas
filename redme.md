@@ -325,3 +325,11 @@ Servirá para configura as variáveis de ambiente do projeto
 ```shell
   npm i dotenv
 ```
+
+### Instalação do Class-transformer
+
+Servirá para modificar os dados enviados para o cliente
+
+```shell
+  npm i class-transformer --save
+```
