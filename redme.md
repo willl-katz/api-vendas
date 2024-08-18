@@ -317,6 +317,7 @@ const paginateCustomer = paginationObject(
   totalItems,
 );
 ```
+
 ### Instalação do Dotenv
 
 Servirá para configura as variáveis de ambiente do projeto
