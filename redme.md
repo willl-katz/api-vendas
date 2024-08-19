@@ -359,3 +359,27 @@ Servirá como um midleware, ou seja, ele vai ficar vijiando cada requisição fe
 ```shell
   npm i rate-limiter-flexible
 ```
+
+### Instalação do Babel
+
+Servirá para transpilar o código Javascript moderno (como ES6/ES2015 e versões posteriores) em uma versão mais antiga e compatível com navegadores que não suportam esses recursos mais recentes.
+
+```shell
+  npm i -D @babel/cli @babel/core @babel/node @babel/preset-env @babel/preset-typescript @babel/plugin-proposal-decorators @babel/plugin-proposal-class-properties babel-plugin-module-resolver babel-plugin-transform-typescript-metadata
+```
+
+Obs: Para resolver alguns conflitos que foram gerados na aplicação do babel ao typescript, fiz algumas modificações que resolveram os problemas subsequentes adicionando novos parâmetros no "typescript.json":
+
+```json
+  {
+    "compilerOptions": {
+      "rootDir": "./src",
+      "outDir": "./dist",
+      "declaration": true,
+      "emitDeclarationOnly": true,
+      "isolatedModules": true,
+    },
+    "include": ["src/**/*"],
+    "exclude": ["node_modules", "dist"]
+  }
+```

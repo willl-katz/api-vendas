@@ -31,6 +31,8 @@ app.use(
       });
     }
 
+    console.log(error);
+
     // Erro gerado pelo servidor
     return response.status(500).json({
       status: 'error',
