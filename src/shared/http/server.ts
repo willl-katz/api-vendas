@@ -8,11 +8,13 @@ import AppError from '@shared/errors/AppError';
 import { errors } from 'celebrate';
 import '@shared/typeorm';
 import uploadConfig from '@config/upload';
+import rateLimiter from './middlewares/rateLimiter';
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use(rateLimiter);
 app.use('/files', express.static(uploadConfig.directory)); // Definição de rota statica para visualização das imagens via diretório
 
 app.use(routes);

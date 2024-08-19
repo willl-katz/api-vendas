@@ -351,3 +351,11 @@ Passo 1 - Fazer as configurações iniciais do Redis
 ```
 
 Obs: O pacote de definição de tipos da biblioteca IOREDIS está apresentando problemas na versão 5 por estar sendo definido como deprecated.
+
+### Instalação do rate-limiter-flexible
+
+Servirá como um midleware, ou seja, ele vai ficar vijiando cada requisição feita pela API, evitando assim, ataques comuns a apicações, como DDOS, por exemplo.
+
+```shell
+  npm i rate-limiter-flexible
+```
