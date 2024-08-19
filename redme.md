@@ -333,3 +333,21 @@ Servirá para modificar os dados enviados para o cliente
 ```shell
   npm i class-transformer --save
 ```
+
+### Implementando cache com o Redis
+
+Passo 1 - Fazer as configurações iniciais do Redis
+
+```shell
+  docker run --name redis -p 6379:6379 -d -t redis:alpine
+```
+
+```shell
+  npm i redis ioredis
+```
+
+```shell
+  npm i @types/redis @types/ioredis@4.28.10 -D
+```
+
+Obs: O pacote de definição de tipos da biblioteca IOREDIS está apresentando problemas na versão 5 por estar sendo definido como deprecated.

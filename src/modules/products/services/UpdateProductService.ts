@@ -1,6 +1,7 @@
 import { ProductRepository } from "../typeorm/repositories/ProductsRepository";
 import Product from "../typeorm/entities/Product";
 import AppError from "@shared/errors/AppError";
+import RedisCache from "@shared/cache/RedisCache";
 
 interface IRequest {
   id: string;
@@ -33,6 +34,9 @@ class UpdateProductService {
     product.name = name;
     product.price = price;
     product.quantity = quantity;
+
+    const redisCache = new RedisCache();
+    await redisCache.invalidate('api-vendas-PRODUCT_LIST');
 
     await productsRepository.save(product);
 
