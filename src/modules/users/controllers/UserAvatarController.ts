@@ -11,7 +11,7 @@ export default class UserAvatarController {
       throw new AppError("Error updating user avatar")
     }
 
-    const user = updateAvatar.execute({
+    const user = await updateAvatar.execute({
       user_id: request.user.id,
       avatarFilename: request.file.filename
     })
