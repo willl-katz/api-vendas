@@ -1,23 +1,19 @@
 import AppError from "@shared/errors/AppError";
-import { UsersRepository } from "../typeorm/repositories/UsersRepository";
-import User from "../typeorm/entities/User";
-import path from 'path';
-import uploadConfig from "@config/upload";
-import fs from "fs";
 import DiskStorageProvider from "@shared/storage/DiskStorageProvider";
-
-interface IRequest {
-  user_id: string;
-  avatarFilename: string;
-}
+import User from "../infra/typeorm/entities/User";
+import { UsersRepository } from "../infra/typeorm/repositories/UsersRepository";
+import { IUpdateUser } from "../domain/models/IUpdateUser";
 
 class UpdateUserAvatarService {
-  public async execute({ user_id, avatarFilename }:IRequest):Promise<User> {
+  public async execute({
+    user_id,
+    avatarFilename,
+  }: IUpdateUser): Promise<User> {
     const user = await UsersRepository.findById(user_id);
     const storageProvider = new DiskStorageProvider();
 
     if (!user) {
-      throw new AppError('User not found')
+      throw new AppError('User not found');
     }
 
     if (user.avatar) {

@@ -1,16 +1,13 @@
-import AppError from "@shared/errors/AppError";
-import { CustomerRepository } from "../typeorm/repositories/CustomerRepository";
-
-interface IRequest {
-  id: string;
-}
+import AppError from '@shared/errors/AppError';
+import { CustomerRepository } from '../infra/typeorm/repositories/CustomerRepository';
+import { ISearchByIdCustomer } from '../domain/models/ISearchByIdCustomer';
 
 class DeleteCustomerService {
-  public async execute({ id }:IRequest):Promise<void> {
+  public async execute({ id }: ISearchByIdCustomer): Promise<void> {
     const customer = await CustomerRepository.findOne({
       where: {
-        id
-      }
+        id,
+      },
     });
 
     if (!customer) {

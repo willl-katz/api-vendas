@@ -1,13 +1,10 @@
-import { UsersRepository } from "../typeorm/repositories/UsersRepository";
-import User from "../typeorm/entities/User";
 import AppError from "@shared/errors/AppError";
-
-interface IRequest {
-  user_id: string;
-}
+import { UsersRepository } from "../infra/typeorm/repositories/UsersRepository";
+import User from "../infra/typeorm/entities/User";
+import { IShowProfile } from "../domain/models/IShowProfile";
 
 class ShowProfileService {
-  public async execute({ user_id }:IRequest):Promise<User> {
+  public async execute({ user_id }: IShowProfile): Promise<User> {
     const user = await UsersRepository.findById(user_id);
 
     if (!user) throw new AppError('User not found');

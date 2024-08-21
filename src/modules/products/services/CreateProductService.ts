@@ -1,16 +1,15 @@
 import AppError from "@shared/errors/AppError";
-import { ProductRepository } from "../typeorm/repositories/ProductsRepository";
-import Product from "../typeorm/entities/Product";
 import RedisCache from "@shared/cache/RedisCache";
-
-interface IRequest {
-  name: string;
-  price: number;
-  quantity: number;
-}
+import { ProductRepository } from "../infra/typeorm/repositories/ProductsRepository";
+import { ICreateOrder } from "../domain/models/ICreateProduct";
+import Product from "../infra/typeorm/entities/Product";
 
 class CreateProductService {
-  public async execute({ name, price, quantity }:IRequest):Promise<Product> {
+  public async execute({
+    name,
+    price,
+    quantity,
+  }: ICreateOrder): Promise<Product> {
     const productsRepository = ProductRepository;
     const productExists = await productsRepository.findByName(name);
 
@@ -22,7 +21,7 @@ class CreateProductService {
     const product = productsRepository.create({
       name,
       price,
-      quantity
+      quantity,
     });
 
     const redisCache = new RedisCache();

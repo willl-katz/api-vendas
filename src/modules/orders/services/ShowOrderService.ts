@@ -1,13 +1,10 @@
 import AppError from '@shared/errors/AppError';
-import Order from '../typeorm/entities/Order';
-import { OrdersRepository } from '../typeorm/repositories/OrdersRepository';
-
-interface IRequest {
-  id: string;
-}
+import Order from '../infra/typeorm/entities/Order';
+import { OrdersRepository } from '../infra/typeorm/repositories/OrdersRepository';
+import { ISearchByIdOrder } from '../domain/models/ISearchByIdOrder';
 
 class ShowOrderService {
-  public async execute({ id }: IRequest): Promise<Order> {
+  public async execute({ id }: ISearchByIdOrder): Promise<Order> {
     const order = await OrdersRepository.findById(id);
 
     // Condição para gerar um erro caso já exista um produto com tal nome.

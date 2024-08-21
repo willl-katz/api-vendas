@@ -1,0 +1,3 @@
+interface ISendForgotPasswordEmail {
+  email: string;
+}

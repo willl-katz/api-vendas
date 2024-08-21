@@ -1,19 +1,16 @@
-import { ProductRepository } from "../typeorm/repositories/ProductsRepository";
 import AppError from "@shared/errors/AppError";
 import RedisCache from "@shared/cache/RedisCache";
-
-interface IRequest {
-  id: string;
-}
+import { ISearchByIdProduct } from "../domain/models/ISearchByIdProduct";
+import { ProductRepository } from "../infra/typeorm/repositories/ProductsRepository";
 
 class DeleteProductService {
-  public async execute({ id }:IRequest):Promise<void> {
+  public async execute({ id }: ISearchByIdProduct): Promise<void> {
     const productsRepository = ProductRepository;
 
     const product = await productsRepository.findOne({
       where: {
-        id
-      }
+        id,
+      },
     });
 
     if (!product) {

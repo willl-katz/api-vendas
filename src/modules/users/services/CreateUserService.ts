@@ -1,16 +1,11 @@
 import AppError from "@shared/errors/AppError";
-import { UsersRepository } from "../typeorm/repositories/UsersRepository";
-import User from "../typeorm/entities/User";
 import { hash } from "bcryptjs";
-
-interface IRequest {
-  name: string;
-  email: string;
-  password: string;
-}
+import { UsersRepository } from "../infra/typeorm/repositories/UsersRepository";
+import User from "../infra/typeorm/entities/User";
+import { ICreateUser } from "../domain/models/ICreateUser";
 
 class CreateUserService {
-  public async execute({ name, email, password }:IRequest):Promise<User> {
+  public async execute({ name, email, password }: ICreateUser): Promise<User> {
     const emailExists = await UsersRepository.findByEmail(email);
 
     if (emailExists) {
@@ -22,8 +17,8 @@ class CreateUserService {
     const user = UsersRepository.create({
       name,
       email,
-      password: hashedPassword
-    })
+      password: hashedPassword,
+    });
 
     await UsersRepository.save(user);
 

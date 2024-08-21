@@ -1,22 +1,18 @@
-import AppError from "@shared/errors/AppError";
-import { UsersRepository } from "../typeorm/repositories/UsersRepository";
-import User from "../typeorm/entities/User";
-import { compare } from "bcryptjs";
-import { sign } from "jsonwebtoken";
-import authConfig from "@config/auth";
-
-interface IRequest {
-  email: string;
-  password: string;
-}
-
-interface IResponse {
-  user: User;
-  token: string;
-}
+import AppError from '@shared/errors/AppError';
+import { compare } from 'bcryptjs';
+import { sign } from 'jsonwebtoken';
+import authConfig from '@config/auth';
+import { UsersRepository } from '../infra/typeorm/repositories/UsersRepository';
+import {
+  ICreateSessionRequest,
+  ICreateSessionResponse,
+} from '../domain/models/ICreateSession';
 
 class CreateSessionService {
-  public async execute({ email, password }:IRequest):Promise<IResponse> {
+  public async execute({
+    email,
+    password,
+  }: ICreateSessionRequest): Promise<ICreateSessionResponse> {
     const user = await UsersRepository.findByEmail(email);
 
     if (!user) {
@@ -29,14 +25,18 @@ class CreateSessionService {
       throw new AppError('Incorrect email/password combination.', 401);
     }
 
+    if (!authConfig.jwt.secret) {
+      throw new AppError('Server Internal Error - Token is required.', 500);
+    }
+
     const token = sign({}, authConfig.jwt.secret, {
       subject: user.id,
       expiresIn: authConfig.jwt.expiresIn,
-    })
+    });
 
     return {
       user,
-      token
+      token,
     };
   }
 }

@@ -1,26 +1,12 @@
 import { paginationObject } from 'typeorm-easy-paginate';
-import Customer from '../typeorm/entities/Customer';
-import { CustomerRepository } from '../typeorm/repositories/CustomerRepository';
-
-interface IPaginatieCustomer {
-  content: Customer[];
-  pagination: {
-    page: number;
-    perPage: number;
-    totalPage: number;
-    totalItems: number;
-  };
-}
-
-interface IRequest {
-  totalCurrentPage: number;
-  totalPerPage: number;
-}
+import Customer from '../infra/typeorm/entities/Customer';
+import { CustomerRepository } from '../infra/typeorm/repositories/CustomerRepository';
+import { IListCustomer, IPaginatieCustomer } from '../domain/models/IListCustomer';
 class ListCustomersService {
   public async execute({
     totalCurrentPage,
     totalPerPage
-  }: IRequest): Promise<IPaginatieCustomer> {
+  }: IListCustomer): Promise<IPaginatieCustomer> {
     const customers = await CustomerRepository.find();
     const totalItems = await CustomerRepository.count();
 

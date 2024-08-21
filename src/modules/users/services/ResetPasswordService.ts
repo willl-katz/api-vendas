@@ -1,16 +1,12 @@
 import { isAfter, addHours } from 'date-fns';
-import { UsersRepository } from '../typeorm/repositories/UsersRepository';
-import { UserTokensRepository } from '../typeorm/repositories/UserTokensRepository';
-import AppError from "@shared/errors/AppError";
+import AppError from '@shared/errors/AppError';
 import { hash } from 'bcryptjs';
-
-interface IRequest {
-  token: string;
-  password: string;
-}
+import { UserTokensRepository } from '../infra/typeorm/repositories/UserTokensRepository';
+import { UsersRepository } from '../infra/typeorm/repositories/UsersRepository';
+import { IResetPassword } from '../domain/models/IResetPassword';
 
 class ResetPasswordService {
-  public async execute({ token, password }:IRequest):Promise<void> {
+  public async execute({ token, password }: IResetPassword): Promise<void> {
     const userToken = await UserTokensRepository.findByToken(token);
 
     if (!userToken) throw new AppError('User Token does not exists.');

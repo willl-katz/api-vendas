@@ -1,16 +1,14 @@
-import AppError from "@shared/errors/AppError";
-import { compare, hash } from "bcryptjs";
-import Customer from "../typeorm/entities/Customer";
-import { CustomerRepository } from "../typeorm/repositories/CustomerRepository";
-
-interface IRequest {
-  id: string;
-  name: string;
-  email: string;
-}
-
+import AppError from '@shared/errors/AppError';
+import { compare, hash } from 'bcryptjs';
+import { CustomerRepository } from '../infra/typeorm/repositories/CustomerRepository';
+import Customer from '../infra/typeorm/entities/Customer';
+import { IUpdateCustomer } from '../domain/models/IUpdateCustomer';
 class UpdateCustomerService {
-  public async execute({ id, email, name }:IRequest):Promise<Customer> {
+  public async execute({
+    id,
+    email,
+    name,
+  }: IUpdateCustomer): Promise<Customer> {
     const customer = await CustomerRepository.findById(id);
 
     if (!customer) throw new AppError('User not found');
@@ -18,7 +16,7 @@ class UpdateCustomerService {
     const customerExists = await CustomerRepository.findByEmail(email);
 
     if (customerExists && email !== customer.email) {
-      throw new AppError('There is already one customer with this email')
+      throw new AppError('There is already one customer with this email');
     }
 
     customer.email = email;

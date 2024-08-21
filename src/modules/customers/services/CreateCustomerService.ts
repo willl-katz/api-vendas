@@ -1,15 +1,10 @@
 import AppError from "@shared/errors/AppError";
-import { hash } from "bcryptjs";
-import Customer from "../typeorm/entities/Customer";
-import { CustomerRepository } from "../typeorm/repositories/CustomerRepository";
-
-interface IRequest {
-  name: string;
-  email: string;
-}
+import { ICreateCustomer } from "../domain/models/ICreateCustomer";
+import { CustomerRepository } from "../infra/typeorm/repositories/CustomerRepository";
+import Customer from "../infra/typeorm/entities/Customer";
 
 class CreateCustomerService {
-  public async execute({ name, email }:IRequest):Promise<Customer> {
+  public async execute({ name, email }: ICreateCustomer): Promise<Customer> {
     const emailExists = await CustomerRepository.findByEmail(email);
 
     if (emailExists) {
@@ -18,8 +13,8 @@ class CreateCustomerService {
 
     const customer = CustomerRepository.create({
       name,
-      email
-    })
+      email,
+    });
 
     await CustomerRepository.save(customer);
 
