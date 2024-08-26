@@ -1,12 +1,12 @@
 import { Request, Response } from 'express';
-import ListUserService from '../services/ListUserService';
-import CreateUserService from '../services/CreateUserService';
 import { instanceToPlain } from 'class-transformer';
-import User from '../typeorm/entities/User';
+import ListUserService from '@modules/users/services/ListUserService';
+import CreateUserService from '@modules/users/services/CreateUserService';
+import { container } from 'tsyringe';
 
 export default class UsersController {
   public async index(request: Request, response: Response): Promise<Response> {
-    const listUsers = new ListUserService();
+    const listUsers = container.resolve(ListUserService);
 
     const users = await listUsers.execute();
 
@@ -16,7 +16,7 @@ export default class UsersController {
   public async create(request: Request, response: Response): Promise<Response> {
     const { name, email, password } = request.body;
 
-    const createUser = new CreateUserService();
+    const createUser = container.resolve(CreateUserService);
 
     const user = await createUser.execute({
       name,
@@ -26,8 +26,5 @@ export default class UsersController {
 
     return response.json(instanceToPlain(user));
   }
-}
-function classToInstance(users: import("../typeorm/entities/User").default[], arg1: { strategy: string; }): any {
-  throw new Error('Function not implemented.');
 }
 

@@ -2,8 +2,14 @@ import AppError from '@shared/errors/AppError';
 import { IUpdateCustomer } from '../domain/models/IUpdateCustomer';
 import { ICustomer } from '../domain/models/ICustomer';
 import { ICustomersRepository } from '../domain/repositories/ICustomersRepository';
+import { inject, injectable } from 'tsyringe';
+
+@injectable()
 class UpdateCustomerService {
-  constructor(private customersRepository: ICustomersRepository) { }
+  constructor(
+    @inject('CustomerRepository')
+    private customersRepository: ICustomersRepository,
+  ) {}
 
   public async execute({
     id,

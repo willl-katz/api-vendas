@@ -3,9 +3,13 @@ import RedisCache from '@shared/cache/RedisCache';
 import { IProduct } from '../domain/models/IProduct';
 import { IProductsRepository } from '../domain/repositories/IProductsRepository';
 import { ICreateProduct } from '../domain/models/ICreateProduct';
+import { inject, injectable } from 'tsyringe';
 
+@injectable()
 class CreateProductService {
-  constructor(private productRepository: IProductsRepository) {}
+  constructor(
+    @inject('ProductRepository') private productRepository: IProductsRepository,
+  ) {}
 
   public async execute({
     name,

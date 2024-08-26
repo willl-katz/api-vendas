@@ -1,12 +1,12 @@
 import { In, Repository } from 'typeorm';
 import Product from '../entities/Product';
-import { AppDataSource } from '@shared/infra/typeorm';
 import {
   IFindProducts,
   IProductsRepository,
 } from '@modules/products/domain/repositories/IProductsRepository';
 import { IProduct } from '@modules/products/domain/models/IProduct';
 import { ICreateProduct } from '@modules/products/domain/models/ICreateProduct';
+import { AppDataSource } from '@shared/infra/typeorm';
 
 export class ProductRepository implements IProductsRepository {
   private ormRepository: Repository<IProduct>;

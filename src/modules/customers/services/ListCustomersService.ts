@@ -1,13 +1,22 @@
 import { paginationObject } from 'typeorm-easy-paginate';
-import { IListCustomer, IPaginatieCustomer } from '../domain/models/IListCustomer';
+import {
+  IListCustomer,
+  IPaginatieCustomer,
+} from '../domain/models/IListCustomer';
 import { ICustomersRepository } from '../domain/repositories/ICustomersRepository';
 import { ICustomer } from '../domain/models/ICustomer';
+import { inject, injectable } from 'tsyringe';
+
+@injectable()
 class ListCustomersService {
-  constructor(private customersRepository: ICustomersRepository) { }
+  constructor(
+    @inject('CustomerRepository')
+    private customersRepository: ICustomersRepository,
+  ) {}
 
   public async execute({
     totalCurrentPage,
-    totalPerPage
+    totalPerPage,
   }: IListCustomer): Promise<IPaginatieCustomer> {
     const listCustomers = await this.customersRepository.propertiesPagination();
     const customers = listCustomers.listCustomers;

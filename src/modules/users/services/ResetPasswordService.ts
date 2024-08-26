@@ -1,15 +1,17 @@
 import { isAfter, addHours } from 'date-fns';
 import AppError from '@shared/errors/AppError';
 import { hash } from 'bcryptjs';
-import { UserTokensRepository } from '../infra/typeorm/repositories/UserTokensRepository';
-import { UsersRepository } from '../infra/typeorm/repositories/UsersRepository';
 import { IResetPassword } from '../domain/models/IResetPassword';
 import { IUserTokensRepository } from '../domain/repositories/IUserTokensRepository';
 import { IUserRepository } from '../domain/repositories/IUserRepository';
+import { inject, injectable } from 'tsyringe';
 
+@injectable()
 class ResetPasswordService {
   constructor(
+    @inject('UserTokensRepository')
     private usersTokensRepository: IUserTokensRepository,
+    @inject('UsersRepository')
     private usersRepository: IUserRepository,
   ) {}
 

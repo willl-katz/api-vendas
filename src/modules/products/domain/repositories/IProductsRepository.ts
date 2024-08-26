@@ -1,5 +1,6 @@
 import { ICreateProduct } from "../models/ICreateProduct";
 import { IProduct } from "../models/IProduct";
+import { IUpdatedProductQuantity } from "../models/IUpdateProductQuantity";
 
 export interface IFindProducts {
   id: string;
@@ -12,5 +13,5 @@ export interface IProductsRepository {
   findById(id: string): Promise<IProduct | null>;
   create(data: ICreateProduct): Promise<IProduct>;
   remove(product: IProduct): Promise<void>;
-  save(product: IProduct): Promise<void>;
+  save(product: IProduct | IUpdatedProductQuantity[]): Promise<void>;
 }

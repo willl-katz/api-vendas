@@ -1,12 +1,13 @@
 import { Request, Response } from "express";
-import ShowProfileService from "../services/ShowProfileService";
 import AppError from "@shared/errors/AppError";
-import UpdateProfileService from "../services/UpdateProfileService";
 import { instanceToPlain } from "class-transformer";
+import ShowProfileService from "@modules/users/services/ShowProfileService";
+import UpdateProfileService from "@modules/users/services/UpdateProfileService";
+import { container } from "tsyringe";
 
 export default class ProfileController {
   public async show(request: Request, response: Response): Promise<Response> {
-    const showProfile = new ShowProfileService();
+    const showProfile = container.resolve(ShowProfileService);
     const user_id = request.user.id;
 
     if (!user_id) throw new AppError('User not found');
@@ -22,7 +23,7 @@ export default class ProfileController {
     const user_id = request.user.id;
     const { name, email, password, old_password } = request.body;
 
-    const updateProfile = new UpdateProfileService();
+    const updateProfile = container.resolve(UpdateProfileService);
 
     if (!user_id) throw new AppError('User not found');
 

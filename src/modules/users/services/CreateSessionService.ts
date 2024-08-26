@@ -7,9 +7,14 @@ import {
   ICreateSessionResponse,
 } from '../domain/models/ICreateSession';
 import { IUserRepository } from '../domain/repositories/IUserRepository';
+import { inject, injectable } from 'tsyringe';
 
+@injectable()
 class CreateSessionService {
-  constructor(private productRepository: IUserRepository) { }
+  constructor(
+    @inject('UsersRepository')
+    private productRepository: IUserRepository,
+  ) {}
 
   public async execute({
     email,

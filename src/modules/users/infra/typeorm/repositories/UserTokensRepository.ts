@@ -5,7 +5,7 @@ import { IUserToken } from '@modules/users/domain/models/IUserToken';
 import { Repository } from 'typeorm';
 
 export class UserTokensRepository implements IUserTokensRepository {
-  private ormRepository: Repository<IUserToken>;
+  private ormRepository: Repository<UserToken>;
   constructor() {
     this.ormRepository = AppDataSource.getRepository(UserToken);
   }

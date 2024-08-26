@@ -3,9 +3,12 @@ import DiskStorageProvider from '@shared/storage/DiskStorageProvider';
 import { IUpdateUser } from '../domain/models/IUpdateUser';
 import { IUser } from '../domain/models/IUser';
 import { IUserRepository } from '../domain/repositories/IUserRepository';
-
+import { inject, injectable } from 'tsyringe';
+@injectable()
 class UpdateUserAvatarService {
-  constructor(private usersRepository: IUserRepository) {}
+  constructor(
+    @inject('UsersRepository') private usersRepository: IUserRepository,
+  ) {}
 
   public async execute({
     user_id,

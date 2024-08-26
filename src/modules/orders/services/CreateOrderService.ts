@@ -1,33 +1,41 @@
 import AppError from '@shared/errors/AppError';
 import { ICreateOrder } from '../domain/models/ICreateOrder';
-import { CustomerRepository } from '@modules/customers/infra/typeorm/repositories/CustomerRepository';
-import { ProductRepository } from '@modules/products/infra/typeorm/repositories/ProductsRepository';
-import { OrdersRepository } from '../infra/typeorm/repositories/OrdersRepository';
 import { IOrder } from '../domain/models/IOrder';
 import { IOrdersProductsRepository } from '../domain/repositories/IOrdersRepository';
+import { inject, injectable } from 'tsyringe';
+import { ICustomersRepository } from '@modules/customers/domain/repositories/ICustomersRepository';
+import { IProductsRepository } from '@modules/products/domain/repositories/IProductsRepository';
 
+@injectable()
 class CreateOrderService {
-  constructor(private ordersRepository: IOrdersProductsRepository) {}
+  constructor(
+    @inject('OrdersRepository')
+    private ordersRepository: IOrdersProductsRepository,
+    @inject('CustomerRepository')
+    private customerRepository: ICustomersRepository,
+    @inject('ProductRepository')
+    private productRepository: IProductsRepository,
+  ) {}
 
   public async execute({
     customer_id,
     products,
   }: ICreateOrder): Promise<IOrder> {
-    const customerExists = await CustomerRepository.findById(customer_id);
+    const customerExists = await this.customerRepository.findById(customer_id);
 
     // Condição para gerar um erro caso já exista um produto com tal nome.
     if (!customerExists) {
       throw new AppError('Could not find any customer with the given id.');
     }
 
-    const existsProducts = await ProductRepository.findAllByIds(products);
+    const existsProducts = await this.productRepository.findAllByIds(products);
 
     // Condição para gerar um erro caso não exista produtos
     if (!existsProducts.length) {
       throw new AppError('Could not find any products with the given ids.');
     }
 
-    const existsProductsIds = existsProducts.map((product) => product.id);
+    const existsProductsIds = existsProducts.map(product => product.id);
 
     const checkInexistentProducts = products.filter(
       product => !existsProductsIds.includes(product.id),
@@ -76,7 +84,7 @@ class CreateOrderService {
         product.quantity,
     }));
 
-    await ProductRepository.save(updatedProductQuantity);
+    await this.productRepository.save(updatedProductQuantity);
 
     return order;
   }
