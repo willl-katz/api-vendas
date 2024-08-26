@@ -1,22 +1,25 @@
 import AppError from '@shared/errors/AppError';
 import { compare, hash } from 'bcryptjs';
-import User from '../infra/typeorm/entities/User';
 import { UsersRepository } from '../infra/typeorm/repositories/UsersRepository';
 import { IUpdateProfile } from '../domain/models/IUpdateProfile';
+import { IUser } from '../domain/models/IUser';
+import { IUserRepository } from '../domain/repositories/IUserRepository';
 
 class UpdateProfileService {
+  constructor(private usersRepository: IUserRepository) {}
+
   public async execute({
     user_id,
     email,
     name,
     old_password,
     password,
-  }: IUpdateProfile): Promise<User> {
-    const user = await UsersRepository.findById(user_id);
+  }: IUpdateProfile): Promise<IUser> {
+    const user = await this.usersRepository.findById(user_id);
 
     if (!user) throw new AppError('User not found');
 
-    const userUpdateEmail = await UsersRepository.findByEmail(email);
+    const userUpdateEmail = await this.usersRepository.findByEmail(email);
 
     if (userUpdateEmail && userUpdateEmail.id !== user.id) {
       throw new AppError('There is already one user with this email');
@@ -35,7 +38,7 @@ class UpdateProfileService {
     user.email = email;
     user.name = name;
 
-    await UsersRepository.save(user);
+    await this.usersRepository.save(user);
 
     return user;
   }

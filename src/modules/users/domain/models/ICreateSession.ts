@@ -1,4 +1,4 @@
-import User from "@modules/users/infra/typeorm/entities/User";
+import { IUser } from "./IUser";
 
 export interface ICreateSessionRequest {
   email: string;
@@ -6,6 +6,6 @@ export interface ICreateSessionRequest {
 }
 
 export interface ICreateSessionResponse {
-  user: User;
+  user: IUser;
   token: string;
 }

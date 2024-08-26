@@ -1,24 +1,25 @@
-import AppError from "@shared/errors/AppError";
-import RedisCache from "@shared/cache/RedisCache";
-import { ProductRepository } from "../infra/typeorm/repositories/ProductsRepository";
-import { ICreateOrder } from "../domain/models/ICreateProduct";
-import Product from "../infra/typeorm/entities/Product";
+import AppError from '@shared/errors/AppError';
+import RedisCache from '@shared/cache/RedisCache';
+import { IProduct } from '../domain/models/IProduct';
+import { IProductsRepository } from '../domain/repositories/IProductsRepository';
+import { ICreateProduct } from '../domain/models/ICreateProduct';
 
 class CreateProductService {
+  constructor(private productRepository: IProductsRepository) {}
+
   public async execute({
     name,
     price,
     quantity,
-  }: ICreateOrder): Promise<Product> {
-    const productsRepository = ProductRepository;
-    const productExists = await productsRepository.findByName(name);
+  }: ICreateProduct): Promise<IProduct> {
+    const productExists = await this.productRepository.findByName(name);
 
     // Condição para gerar um erro caso já exista um produto com tal nome.
     if (productExists) {
       throw new AppError('There is already a product with this name');
     }
 
-    const product = productsRepository.create({
+    const product = await this.productRepository.create({
       name,
       price,
       quantity,
@@ -26,8 +27,6 @@ class CreateProductService {
 
     const redisCache = new RedisCache();
     await redisCache.invalidate('api-vendas-PRODUCT_LIST');
-
-    await productsRepository.save(product);
 
     return product;
   }

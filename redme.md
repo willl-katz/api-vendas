@@ -383,3 +383,11 @@ Obs: Para resolver alguns conflitos que foram gerados na aplicação do babel ao
     "exclude": ["node_modules", "dist"]
   }
 ```
+
+### Instalação do tsyringe
+
+Servirá para aplicar injeção de dependências para typescript/javascript para injeção de contrutor.
+
+```shell
+  npm install --save tsyringe
+```

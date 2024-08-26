@@ -1,15 +1,17 @@
-import AppError from "@shared/errors/AppError";
-import DiskStorageProvider from "@shared/storage/DiskStorageProvider";
-import User from "../infra/typeorm/entities/User";
-import { UsersRepository } from "../infra/typeorm/repositories/UsersRepository";
-import { IUpdateUser } from "../domain/models/IUpdateUser";
+import AppError from '@shared/errors/AppError';
+import DiskStorageProvider from '@shared/storage/DiskStorageProvider';
+import { IUpdateUser } from '../domain/models/IUpdateUser';
+import { IUser } from '../domain/models/IUser';
+import { IUserRepository } from '../domain/repositories/IUserRepository';
 
 class UpdateUserAvatarService {
+  constructor(private usersRepository: IUserRepository) {}
+
   public async execute({
     user_id,
     avatarFilename,
-  }: IUpdateUser): Promise<User> {
-    const user = await UsersRepository.findById(user_id);
+  }: IUpdateUser): Promise<IUser> {
+    const user = await this.usersRepository.findById(user_id);
     const storageProvider = new DiskStorageProvider();
 
     if (!user) {
@@ -18,6 +20,8 @@ class UpdateUserAvatarService {
 
     if (user.avatar) {
       /*
+      --- Old line of code ---
+
       const userAvatarFilePath = path.join(uploadConfig.directory, user.avatar);
       const userAvatarFileExists = await fs.promises.stat(userAvatarFilePath);
 
@@ -33,7 +37,7 @@ class UpdateUserAvatarService {
 
     user.avatar = filename;
 
-    await UsersRepository.save(user);
+    await this.usersRepository.save(user);
 
     return user;
   }

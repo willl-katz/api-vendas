@@ -1,7 +1,8 @@
-import Product from "../infra/typeorm/entities/Product";
-import AppError from "@shared/errors/AppError";
-import RedisCache from "@shared/cache/RedisCache";
-import { ProductRepository } from "../infra/typeorm/repositories/ProductsRepository";
+import AppError from '@shared/errors/AppError';
+import RedisCache from '@shared/cache/RedisCache';
+import { ProductRepository } from '../infra/typeorm/repositories/ProductsRepository';
+import { IProduct } from '../domain/models/IProduct';
+import { IProductsRepository } from '../domain/repositories/IProductsRepository';
 
 interface IRequest {
   id: string;
@@ -11,20 +12,21 @@ interface IRequest {
 }
 
 class UpdateProductService {
-  public async execute({ id, name, price, quantity }:IRequest):Promise<Product> {
-    const productsRepository = ProductRepository;
+  constructor(private productRepository: IProductsRepository) {}
 
-    const product = await productsRepository.findOne({
-      where: {
-        id
-      }
-    });
+  public async execute({
+    id,
+    name,
+    price,
+    quantity,
+  }: IRequest): Promise<IProduct> {
+    const product = await this.productRepository.findById(id);
 
     if (!product) {
       throw new AppError('Product not found.');
     }
 
-    const productExists = await productsRepository.findByName(name);
+    const productExists = await this.productRepository.findByName(name);
 
     // Condição para gerar um erro caso já exista um produto com tal nome.
     if (productExists && name !== product.name) {
@@ -38,7 +40,7 @@ class UpdateProductService {
     const redisCache = new RedisCache();
     await redisCache.invalidate('api-vendas-PRODUCT_LIST');
 
-    await productsRepository.save(product);
+    await this.productRepository.save(product);
 
     return product;
   }

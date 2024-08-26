@@ -2,18 +2,20 @@ import AppError from '@shared/errors/AppError';
 import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
 import authConfig from '@config/auth';
-import { UsersRepository } from '../infra/typeorm/repositories/UsersRepository';
 import {
   ICreateSessionRequest,
   ICreateSessionResponse,
 } from '../domain/models/ICreateSession';
+import { IUserRepository } from '../domain/repositories/IUserRepository';
 
 class CreateSessionService {
+  constructor(private productRepository: IUserRepository) { }
+
   public async execute({
     email,
     password,
   }: ICreateSessionRequest): Promise<ICreateSessionResponse> {
-    const user = await UsersRepository.findByEmail(email);
+    const user = await this.productRepository.findByEmail(email);
 
     if (!user) {
       throw new AppError('Incorrect email/password combination.', 401);

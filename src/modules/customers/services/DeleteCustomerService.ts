@@ -1,20 +1,18 @@
 import AppError from '@shared/errors/AppError';
-import { CustomerRepository } from '../infra/typeorm/repositories/CustomerRepository';
 import { ISearchByIdCustomer } from '../domain/models/ISearchByIdCustomer';
+import { ICustomersRepository } from '../domain/repositories/ICustomersRepository';
 
 class DeleteCustomerService {
+  constructor(private customersRepository: ICustomersRepository) {}
+
   public async execute({ id }: ISearchByIdCustomer): Promise<void> {
-    const customer = await CustomerRepository.findOne({
-      where: {
-        id,
-      },
-    });
+    const customer = await this.customersRepository.findOne(id);
 
     if (!customer) {
       throw new AppError('Customer not found.');
     }
 
-    await CustomerRepository.remove(customer);
+    await this.customersRepository.remove(customer);
   }
 }
 

@@ -1,21 +1,24 @@
 import { paginationObject } from 'typeorm-easy-paginate';
-import Customer from '../infra/typeorm/entities/Customer';
-import { CustomerRepository } from '../infra/typeorm/repositories/CustomerRepository';
 import { IListCustomer, IPaginatieCustomer } from '../domain/models/IListCustomer';
+import { ICustomersRepository } from '../domain/repositories/ICustomersRepository';
+import { ICustomer } from '../domain/models/ICustomer';
 class ListCustomersService {
+  constructor(private customersRepository: ICustomersRepository) { }
+
   public async execute({
     totalCurrentPage,
     totalPerPage
   }: IListCustomer): Promise<IPaginatieCustomer> {
-    const customers = await CustomerRepository.find();
-    const totalItems = await CustomerRepository.count();
+    const listCustomers = await this.customersRepository.propertiesPagination();
+    const customers = listCustomers.listCustomers;
+    const totalItems = listCustomers.countListCustomers;
 
     // Função para dividir o array com base na quantidade por página
     function dividirArray({
       array,
       tamanho,
     }: {
-      array: Customer[];
+      array: ICustomer[];
       tamanho: number;
     }) {
       let resultado = [];

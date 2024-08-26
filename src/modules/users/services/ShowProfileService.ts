@@ -1,11 +1,14 @@
-import AppError from "@shared/errors/AppError";
-import { UsersRepository } from "../infra/typeorm/repositories/UsersRepository";
-import User from "../infra/typeorm/entities/User";
-import { IShowProfile } from "../domain/models/IShowProfile";
+import AppError from '@shared/errors/AppError';
+import { UsersRepository } from '../infra/typeorm/repositories/UsersRepository';
+import { IShowProfile } from '../domain/models/IShowProfile';
+import { IUser } from '../domain/models/IUser';
+import { IUserRepository } from '../domain/repositories/IUserRepository';
 
 class ShowProfileService {
-  public async execute({ user_id }: IShowProfile): Promise<User> {
-    const user = await UsersRepository.findById(user_id);
+  constructor(private usersRepository: IUserRepository) {}
+
+  public async execute({ user_id }: IShowProfile): Promise<IUser> {
+    const user = await this.usersRepository.findById(user_id);
 
     if (!user) throw new AppError('User not found');
 

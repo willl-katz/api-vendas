@@ -3,13 +3,16 @@ import { ICreateOrder } from '../domain/models/ICreateOrder';
 import { CustomerRepository } from '@modules/customers/infra/typeorm/repositories/CustomerRepository';
 import { ProductRepository } from '@modules/products/infra/typeorm/repositories/ProductsRepository';
 import { OrdersRepository } from '../infra/typeorm/repositories/OrdersRepository';
-import Order from '../infra/typeorm/entities/Order';
+import { IOrder } from '../domain/models/IOrder';
+import { IOrdersProductsRepository } from '../domain/repositories/IOrdersRepository';
 
 class CreateOrderService {
+  constructor(private ordersRepository: IOrdersProductsRepository) {}
+
   public async execute({
     customer_id,
     products,
-  }: ICreateOrder): Promise<Order> {
+  }: ICreateOrder): Promise<IOrder> {
     const customerExists = await CustomerRepository.findById(customer_id);
 
     // Condição para gerar um erro caso já exista um produto com tal nome.
@@ -58,7 +61,7 @@ class CreateOrderService {
     }));
 
     // Criará o pedido com seu respectivo cliente, e seus variados pedidos dos produtos
-    const order = await OrdersRepository.createOrder({
+    const order = await this.ordersRepository.createOrder({
       customer: customerExists,
       products: serializedProducts,
     });

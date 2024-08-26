@@ -1,16 +1,19 @@
-import RedisCache from "@shared/cache/RedisCache";
-import Product from "../infra/typeorm/entities/Product";
-import { ProductRepository } from "../infra/typeorm/repositories/ProductsRepository";
+import RedisCache from '@shared/cache/RedisCache';
+import { IProduct } from '../domain/models/IProduct';
+import { IProductsRepository } from '../domain/repositories/IProductsRepository';
 
 class ListProductService {
-  public async execute():Promise<Product[]> {
+  constructor(private productRepository: IProductsRepository) {}
 
+  public async execute(): Promise<IProduct[]> {
     const redisCache = new RedisCache();
 
-    let products = await redisCache.recover<Product[]>('api-vendas-PRODUCT_LIST')
+    let products = await redisCache.recover<IProduct[]>(
+      'api-vedas-PRODUCT_LIST',
+    );
 
     if (!products) {
-      products = await ProductRepository.find();
+      products = await this.productRepository.find();
       await redisCache.save('api-vendas-PRODUCT_LIST', products);
     }
 

@@ -4,14 +4,21 @@ import { hash } from 'bcryptjs';
 import { UserTokensRepository } from '../infra/typeorm/repositories/UserTokensRepository';
 import { UsersRepository } from '../infra/typeorm/repositories/UsersRepository';
 import { IResetPassword } from '../domain/models/IResetPassword';
+import { IUserTokensRepository } from '../domain/repositories/IUserTokensRepository';
+import { IUserRepository } from '../domain/repositories/IUserRepository';
 
 class ResetPasswordService {
+  constructor(
+    private usersTokensRepository: IUserTokensRepository,
+    private usersRepository: IUserRepository,
+  ) {}
+
   public async execute({ token, password }: IResetPassword): Promise<void> {
-    const userToken = await UserTokensRepository.findByToken(token);
+    const userToken = await this.usersTokensRepository.findByToken(token);
 
     if (!userToken) throw new AppError('User Token does not exists.');
 
-    const user = await UsersRepository.findById(userToken.user_id);
+    const user = await this.usersRepository.findById(userToken.user_id);
 
     if (!user) throw new AppError('User does not exists.');
 
@@ -24,7 +31,7 @@ class ResetPasswordService {
     const hashedPassword = await hash(password, 8);
     user.password = hashedPassword;
 
-    await UsersRepository.save(user);
+    await this.usersRepository.save(user);
   }
 }
 
