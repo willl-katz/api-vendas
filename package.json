@@ -10,7 +10,7 @@
     "lint-fix": "eslint . --ext .ts --fix",
     "typeorm": "ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
     "migration:create": "npm run typeorm migration:create -n",
-    "migration:run": "npm run typeorm migration:run -- -d src/shared/typeorm/index.ts",
+    "migration:run": "npm run typeorm migration:run -- -d src/shared/infra/typeorm/index.ts",
     "migration:revert": "npm run typeorm migration:revert -- -d src/shared/typeorm/index.ts",
     "test": "jest"
   },

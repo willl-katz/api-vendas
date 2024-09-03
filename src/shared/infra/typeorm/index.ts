@@ -11,8 +11,8 @@ const pathOriginEntities =
 
 export const AppDataSource = new DataSource({
   type: 'postgres',
-  host: 'localhost',
-  port: 5532,
+  host: 'db',
+  port: 5432,
   username: 'postgres',
   password: 'docker',
   database: 'apivendas',
