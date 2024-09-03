@@ -14,7 +14,7 @@ class ShowOrderService {
   public async execute({ id }: ISearchByIdOrder): Promise<IOrder> {
     const order = await this.ordersRepository.findById(id);
 
-    // Condição para gerar um erro caso já exista um produto com tal nome.
+    // Condição para gerar um erro caso não já exista a order
     if (!order) {
       throw new AppError('Order not found.');
     }

@@ -30,7 +30,7 @@ export class OrdersRepository implements IOrdersProductsRepository {
   }: ICreateOrderRequest): Promise<Order> {
     const order = await this.ormRepository.create({
       customer,
-      order_products: products,
+      order_products: products
     });
 
     await this.ormRepository.save(order);

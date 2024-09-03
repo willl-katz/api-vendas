@@ -7,6 +7,7 @@ import {
 import { IProduct } from '@modules/products/domain/models/IProduct';
 import { ICreateProduct } from '@modules/products/domain/models/ICreateProduct';
 import { AppDataSource } from '@shared/infra/typeorm';
+import RedisCache from '@shared/cache/RedisCache';
 
 export class ProductRepository implements IProductsRepository {
   private ormRepository: Repository<IProduct>;
@@ -27,11 +28,17 @@ export class ProductRepository implements IProductsRepository {
 
     await this.ormRepository.save(product);
 
+    const redisCache = new RedisCache();
+    await redisCache.invalidate('api-vendas-PRODUCT_LIST');
+
     return product;
   }
 
   public async remove(product: IProduct): Promise<void> {
     await this.ormRepository.remove(product);
+
+    const redisCache = new RedisCache();
+    await redisCache.invalidate('api-vendas-PRODUCT_LIST');
   }
 
   public async save(product: IProduct): Promise<void> {

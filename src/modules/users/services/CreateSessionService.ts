@@ -11,9 +11,9 @@ import { inject, injectable } from 'tsyringe';
 
 @injectable()
 class CreateSessionService {
+  authConfig: any;
   constructor(
-    @inject('UsersRepository')
-    private productRepository: IUserRepository,
+    @inject('UsersRepository') private productRepository: IUserRepository,
   ) {}
 
   public async execute({
@@ -24,16 +24,11 @@ class CreateSessionService {
 
     if (!user) {
       throw new AppError('Incorrect email/password combination.', 401);
-    }
-
-    const passwordConfirmed = await compare(password, user.password);
-
-    if (!passwordConfirmed) {
-      throw new AppError('Incorrect email/password combination.', 401);
-    }
-
-    if (!authConfig.jwt.secret) {
-      throw new AppError('Server Internal Error - Token is required.', 500);
+    } else {
+      const passwordConfirmed = await compare(password, user.password);
+      if (!passwordConfirmed) {
+        throw new AppError('Incorrect email/password combination.', 401);
+      }
     }
 
     const token = sign({}, authConfig.jwt.secret, {

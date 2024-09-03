@@ -15,6 +15,7 @@ interface IRequest {
 class UpdateProductService {
   constructor(
     @inject('ProductRepository') private productRepository: IProductsRepository,
+    @inject('RedisCache') private redisCache: RedisCache,
   ) {}
 
   public async execute({
@@ -40,8 +41,7 @@ class UpdateProductService {
     product.price = price;
     product.quantity = quantity;
 
-    const redisCache = new RedisCache();
-    await redisCache.invalidate('api-vendas-PRODUCT_LIST');
+    await this.redisCache.invalidate('api-vendas-PRODUCT_LIST');
 
     await this.productRepository.save(product);
 

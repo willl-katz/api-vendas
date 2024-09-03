@@ -1,5 +1,6 @@
 import AppError from '@shared/errors/AppError';
-import { compare, hash } from 'bcryptjs';import { IUpdateProfile } from '../domain/models/IUpdateProfile';
+import { compare, hash } from 'bcryptjs';
+import { IUpdateProfile } from '../domain/models/IUpdateProfile';
 import { IUser } from '../domain/models/IUser';
 import { IUserRepository } from '../domain/repositories/IUserRepository';
 import { inject, injectable } from 'tsyringe';

@@ -29,9 +29,6 @@ class CreateProductService {
       quantity,
     });
 
-    const redisCache = new RedisCache();
-    await redisCache.invalidate('api-vendas-PRODUCT_LIST');
-
     return product;
   }
 }

@@ -8,6 +8,7 @@ import { inject, injectable } from 'tsyringe';
 class UpdateUserAvatarService {
   constructor(
     @inject('UsersRepository') private usersRepository: IUserRepository,
+    @inject('StorageProvider') private storageProvider = new DiskStorageProvider(),
   ) {}
 
   public async execute({
@@ -15,7 +16,6 @@ class UpdateUserAvatarService {
     avatarFilename,
   }: IUpdateUser): Promise<IUser> {
     const user = await this.usersRepository.findById(user_id);
-    const storageProvider = new DiskStorageProvider();
 
     if (!user) {
       throw new AppError('User not found');
@@ -33,10 +33,10 @@ class UpdateUserAvatarService {
       }
       */
 
-      await storageProvider.deleteFile(user.avatar);
+      await this.storageProvider.deleteFile(user.avatar);
     }
 
-    const filename = await storageProvider.saveFile(avatarFilename);
+    const filename = await this.storageProvider.saveFile(avatarFilename);
 
     user.avatar = filename;
 

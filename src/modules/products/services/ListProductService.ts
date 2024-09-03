@@ -7,13 +7,14 @@ import { inject, injectable } from 'tsyringe';
 class ListProductService {
   constructor(
     @inject('ProductRepository') private productRepository: IProductsRepository,
+    @inject('RedisCache') private redisCache: RedisCache,
   ) {}
 
   public async execute(): Promise<IProduct[]> {
-    const redisCache = new RedisCache();
+    const redisCache = this.redisCache;
 
     let products = await redisCache.recover<IProduct[]>(
-      'api-vedas-PRODUCT_LIST',
+      'api-vendas-PRODUCT_LIST',
     );
 
     if (!products) {

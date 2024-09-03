@@ -391,3 +391,25 @@ Servirá para aplicar injeção de dependências para typescript/javascript para
 ```shell
   npm install --save tsyringe
 ```
+
+### Instalação do Jest
+
+Servirá para fazer testes automatizados na aplicação.
+
+Passo 01: Instalar a biblioteca, juntamente de sua tipagem.
+
+```shell
+  npm i -D jest @types/jest
+```
+
+Passo 02: Criar a comfig do Jest.
+
+```shell
+  npm init jest@latest
+```
+
+Passo 03: Como o projeto é feito em typescript, instalei a biblioteca ts-jest para tal usar .ts, não .js.
+
+```shell
+  npm i -D ts-jest
+```

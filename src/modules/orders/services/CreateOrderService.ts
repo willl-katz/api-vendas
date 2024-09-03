@@ -19,7 +19,7 @@ class CreateOrderService {
 
   public async execute({
     customer_id,
-    products,
+    products
   }: ICreateOrder): Promise<IOrder> {
     const customerExists = await this.customerRepository.findById(customer_id);
 
