@@ -19,10 +19,3 @@ export const AppDataSource = new DataSource({
   migrations: [pathOriginMigrations],
   entities: [pathOriginEntities],
 });
-
-// Irá inicializa o BD, e dar uma resposta
-AppDataSource.initialize()
-  .then(() => {
-    console.log('Data Source inicializado com sucesso!');
-  })
-  .catch(error => console.error('Erro ao inicializar Data Source', error));
